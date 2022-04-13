@@ -6,7 +6,6 @@ import android.view.View
 import kotlin.math.cos
 import kotlin.math.sin
 
-
 class TransformationDrawingView(context: Context) : View(context) {
 
     val myLines = Path()
@@ -45,9 +44,10 @@ class TransformationDrawingView(context: Context) : View(context) {
         greenLinePaint.strokeWidth = 5f
 
         canvas.drawPath(myLines, gradientPaint)
-        val degree = 20.0
-        val rad = Math.toRadians(degree)
-        val newPoints = rotation(points.toTypedArray(), rad)
+//        val newPoints = scaling(points.toTypedArray(), 2.0, 2.0)
+//        val newPoints = translate(points.toTypedArray(), 20.0, 40.0)
+//        val newPoints = rotation(points.toTypedArray(), 30.0)
+        val newPoints = shear(points.toTypedArray(), 0.4, 0.5)
         updatePath(newPoints)
         canvas.drawPath(myLines, greenLinePaint)
     }
@@ -79,33 +79,45 @@ class TransformationDrawingView(context: Context) : View(context) {
         return result
     }
 
-    private fun affineTransformationTranslation(
-        vertices: Array<Point>,
-        matrix: Array<IntArray>
-    ): Array<Point> {
-        val result = Array(vertices.size) { Point(0, 0) }
-        vertices.forEachIndexed { i, _ ->
-            val t = matrix[0][0] * vertices[i].x + matrix[0][1] * vertices[i].y + matrix[0][2]
-            val u = matrix[1][0] * vertices[i].x + matrix[1][1] * vertices[i].y + matrix[1][2]
-            result[i] = Point(t, u)
-        }
-        return result
-    }
-
-    private fun translate(input: Array<Point>, px: Int, py: Int): Array<Point> {
-        val matrix: Array<IntArray> = arrayOf(
-            intArrayOf(1, 0, px),
-            intArrayOf(0, 1, py),
-            intArrayOf(0, 0, 1)
+    private fun translate(input: Array<Point>, px: Double, py: Double): Array<Point> {
+        val matrix: Array<DoubleArray> = arrayOf(
+            doubleArrayOf(1.0, 0.0, px),
+            doubleArrayOf(0.0, 1.0, py),
+            doubleArrayOf(0.0, 0.0, 1.0)
         )
 
-        return affineTransformationTranslation(input, matrix)
+        return affineTransformation(input, matrix)
+    }
+
+    private fun scaling(
+        input: Array<Point>,
+        widthScale: Double,
+        heightScale: Double
+    ): Array<Point> {
+        val matrix: Array<DoubleArray> = arrayOf(
+            doubleArrayOf(widthScale, 0.0, 0.0),
+            doubleArrayOf(0.0, heightScale, 0.0),
+            doubleArrayOf(0.0, 0.0, 1.0)
+        )
+
+        return affineTransformation(input, matrix)
     }
 
     private fun rotation(input: Array<Point>, angle: Double): Array<Point> {
+        val rad = Math.toRadians(angle)
         val matrix: Array<DoubleArray> = arrayOf(
-            doubleArrayOf(cos(angle), (-sin(angle)), 0.0),
-            doubleArrayOf(sin(angle), cos(angle), 0.0),
+            doubleArrayOf(cos(rad), (-sin(rad)), 0.0),
+            doubleArrayOf(sin(rad), cos(rad), 0.0),
+            doubleArrayOf(0.0, 0.0, 1.0)
+        )
+
+        return affineTransformation(input, matrix)
+    }
+
+    private fun shear(input: Array<Point>, horizontal: Double, vertical: Double): Array<Point> {
+        val matrix: Array<DoubleArray> = arrayOf(
+            doubleArrayOf(1.0, horizontal, 0.0),
+            doubleArrayOf(vertical, 1.0, 0.0),
             doubleArrayOf(0.0, 0.0, 1.0)
         )
 
