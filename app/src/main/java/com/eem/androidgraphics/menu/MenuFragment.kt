@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import com.eem.androidgraphics.databinding.FragmentMenuBinding
 import com.eem.androidgraphics.util.replaceFragment
 import com.eem.androidgraphics.week1.DrawingBasicFragment
+import com.eem.androidgraphics.week1.PlottingAndGraphsFragment
 import com.eem.androidgraphics.week1.TransformationDrawingFragment
 
 class MenuFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val binding = FragmentMenuBinding.inflate(inflater, container, false)
 
@@ -24,6 +25,10 @@ class MenuFragment : Fragment() {
 
         binding.btnWeek1Transformation.setOnClickListener {
             replaceFragment(TransformationDrawingFragment.newInstance())
+        }
+
+        binding.btnWeek1Plots.setOnClickListener {
+            replaceFragment(PlottingAndGraphsFragment.newInstance())
         }
 
         return binding.root
