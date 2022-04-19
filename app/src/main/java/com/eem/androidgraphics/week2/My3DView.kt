@@ -23,8 +23,7 @@ class My3DView(context: Context) : View(context) {
         redPaint.color = Color.RED
         redPaint.strokeWidth = 2f
         //create a 3D cube
-        //create a 3D cube
-        cubeVertices = Array<Coordinate>(8) { Coordinate() }
+        cubeVertices = Array(8) { Coordinate() }
         cubeVertices[0] = Coordinate(-1.0, -1.0, -1.0, 1.0)
         cubeVertices[1] = Coordinate(-1.0, -1.0, 1.0, 1.0)
         cubeVertices[2] = Coordinate(-1.0, 1.0, -1.0, 1.0)
@@ -43,7 +42,7 @@ class My3DView(context: Context) : View(context) {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        canvas?.let { DrawCube(it) } //draw a cube onto the screen
+        canvas?.let { drawCube(it) } //draw a cube onto the screen
     }
 
     private fun drawLinePairs(
@@ -67,7 +66,7 @@ class My3DView(context: Context) : View(context) {
         )
     }
 
-    private fun DrawCube(canvas: Canvas) { //draw a cube on the screen
+    private fun drawCube(canvas: Canvas) { //draw a cube on the screen
         drawLinePairs(canvas, drawCubeVertices, 0, 1, redPaint)
         drawLinePairs(canvas, drawCubeVertices, 1, 3, redPaint)
         drawLinePairs(canvas, drawCubeVertices, 3, 2, redPaint)
@@ -196,7 +195,7 @@ class My3DView(context: Context) : View(context) {
         return transformation(vertices, matrix)
     }
 
-    enum class AxisRotation() {
+    enum class AxisRotation {
         X_AXI,
         Y_AXI,
         Z_AXI
