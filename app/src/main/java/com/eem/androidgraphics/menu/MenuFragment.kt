@@ -10,6 +10,7 @@ import com.eem.androidgraphics.util.replaceFragment
 import com.eem.androidgraphics.week1.DrawingBasicFragment
 import com.eem.androidgraphics.week1.PlottingAndGraphsFragment
 import com.eem.androidgraphics.week1.TransformationDrawingFragment
+import com.eem.androidgraphics.week2.Basic3DFragment
 
 class MenuFragment : Fragment() {
 
@@ -29,6 +30,10 @@ class MenuFragment : Fragment() {
 
         binding.btnWeek1Plots.setOnClickListener {
             replaceFragment(PlottingAndGraphsFragment.newInstance())
+        }
+
+        binding.btnWeek23dBasic.setOnClickListener {
+            replaceFragment(Basic3DFragment.newInstance())
         }
 
         return binding.root
