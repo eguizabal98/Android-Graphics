@@ -11,6 +11,7 @@ import com.eem.androidgraphics.week1.DrawingBasicFragment
 import com.eem.androidgraphics.week1.PlottingAndGraphsFragment
 import com.eem.androidgraphics.week1.TransformationDrawingFragment
 import com.eem.androidgraphics.week2.Basic3DFragment
+import com.eem.androidgraphics.week2.Gimbal
 
 class MenuFragment : Fragment() {
 
@@ -33,7 +34,11 @@ class MenuFragment : Fragment() {
         }
 
         binding.btnWeek23dBasic.setOnClickListener {
-            replaceFragment(Basic3DFragment.newInstance())
+            replaceFragment(Basic3DFragment.newInstance(Basic3DFragment.CUBE))
+        }
+
+        binding.btnWeek23dGimbal.setOnClickListener {
+            replaceFragment(Basic3DFragment.newInstance(Basic3DFragment.GIMBAL))
         }
 
         return binding.root
