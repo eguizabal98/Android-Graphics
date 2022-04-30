@@ -1,11 +1,13 @@
 package com.eem.androidgraphics.menu
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.eem.androidgraphics.databinding.FragmentMenuBinding
+import com.eem.androidgraphics.opengl.OpenGlActivity
 import com.eem.androidgraphics.util.replaceFragment
 import com.eem.androidgraphics.week1.DrawingBasicFragment
 import com.eem.androidgraphics.week1.PlottingAndGraphsFragment
@@ -39,6 +41,11 @@ class MenuFragment : Fragment() {
 
         binding.btnWeek23dGimbal.setOnClickListener {
             replaceFragment(Basic3DFragment.newInstance(Basic3DFragment.GIMBAL))
+        }
+
+        binding.btnOpengl1.setOnClickListener {
+            val intent = Intent(requireActivity(), OpenGlActivity::class.java)
+            startActivity(intent)
         }
 
         return binding.root
