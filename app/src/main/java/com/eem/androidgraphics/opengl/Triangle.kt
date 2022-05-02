@@ -4,6 +4,8 @@ import android.opengl.GLES32
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
+import kotlin.math.cos
+import kotlin.math.sin
 
 
 class Triangle {
@@ -11,7 +13,7 @@ class Triangle {
     private val vertexShaderCode =
         "attribute vec3 aVertexPosition;" + "uniform mat4 uMVPMatrix;varying vec4 vColor;" +
                 "void main() {gl_Position = uMVPMatrix *vec4(aVertexPosition,1.0);" +
-                "vColor=vec4(1.0,0.0,0.0,1.0);}"
+                "vColor=vec4(0.0,1.0,0.0,1.0);}"
     private val fragmentShaderCode = "precision mediump float;varying vec4 vColor; " +
             "void main() {gl_FragColor = vColor;}"
 
@@ -25,22 +27,74 @@ class Triangle {
     private var vertexCount = 0 // number of vertices
     private val vertexStride = COORDS_PER_VERTEX * 4 // 4 bytes per vertex
 
-    var triangleVertex = floatArrayOf(
-        -1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f,
-        0.0f, 1.0f, 1.0f)
-
     init {
-        // initialize vertex byte buffer for shape coordinates
+        val radius = 1f
+        var prevx = radius
+        var prevy = 0f
+        val resolution = 180
+
+        var triangleVertex = mutableListOf<Float>()
+
+        for (i in 0..(90+resolution)) {
+            val angle = (i/180f) * Math.PI
+            val x = (radius * cos(angle)).toFloat()
+            val y = (radius * sin(angle)).toFloat()
+
+            //First Quadrant
+            triangleVertex.add(prevx)
+            triangleVertex.add(prevy)
+            triangleVertex.add(1f)
+            triangleVertex.add(0f)
+            triangleVertex.add(0f)
+            triangleVertex.add(1f)
+            triangleVertex.add(x)
+            triangleVertex.add(y)
+            triangleVertex.add(1f)
+
+            //Second Quadrant
+            triangleVertex.add(-prevx)
+            triangleVertex.add(prevy)
+            triangleVertex.add(1f)
+            triangleVertex.add(0f)
+            triangleVertex.add(0f)
+            triangleVertex.add(1f)
+            triangleVertex.add(-x)
+            triangleVertex.add(y)
+            triangleVertex.add(1f)
+
+            //Third Quadrant
+            triangleVertex.add(-prevx)
+            triangleVertex.add(-prevy)
+            triangleVertex.add(1f)
+            triangleVertex.add(0f)
+            triangleVertex.add(0f)
+            triangleVertex.add(1f)
+            triangleVertex.add(-x)
+            triangleVertex.add(-y)
+            triangleVertex.add(1f)
+
+            //Fourth Quadrant
+            triangleVertex.add(prevx)
+            triangleVertex.add(-prevy)
+            triangleVertex.add(1f)
+            triangleVertex.add(0f)
+            triangleVertex.add(0f)
+            triangleVertex.add(1f)
+            triangleVertex.add(x)
+            triangleVertex.add(-y)
+            triangleVertex.add(1f)
+        }
+
+        val vertexArray = triangleVertex.toFloatArray()
 
         // initialize vertex byte buffer for shape coordinates
-        val bb: ByteBuffer = ByteBuffer.allocateDirect(triangleVertex.size * 4) // (# of coordinate values * 4 bytes per float)
+        val bb: ByteBuffer = ByteBuffer.allocateDirect(vertexArray.size * 4) // (# of coordinate values * 4 bytes per float)
 
         bb.order(ByteOrder.nativeOrder())
         vertexBuffer = bb.asFloatBuffer()
-        vertexBuffer?.put(triangleVertex)
+        vertexBuffer?.put(vertexArray)
         vertexBuffer?.position(0)
-        vertexCount = triangleVertex.size / COORDS_PER_VERTEX
+        vertexCount = vertexArray.size / COORDS_PER_VERTEX
         // prepare shaders and OpenGL program
         // prepare shaders and OpenGL program
         val vertexShader: Int = MyRenderer.loadShader(GLES32.GL_VERTEX_SHADER, vertexShaderCode)
