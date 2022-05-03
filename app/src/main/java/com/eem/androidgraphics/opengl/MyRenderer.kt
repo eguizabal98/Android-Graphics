@@ -16,11 +16,13 @@ class MyRenderer : GLSurfaceView.Renderer {
     private val mMVMatrix = FloatArray(16) //model view matrix
     private val mModelMatrix = FloatArray(16) //model  matrix
     private var mtriangle: Triangle? = null
+    private var mpyramid: Pyramid? = null
 
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         // Set the background frame color to black
         GLES32.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
-        mtriangle = Triangle()
+//        mtriangle = Triangle()
+        mpyramid = Pyramid()
     }
 
     override fun onSurfaceChanged(p0: GL10?, width: Int, height: Int) {
@@ -41,7 +43,8 @@ class MyRenderer : GLSurfaceView.Renderer {
 
         GLES32.glDepthFunc(GLES32.GL_LEQUAL) //indicate what type of depth test
 
-        Matrix.setIdentityM(mMVPMatrix, 0) //set the model view projection matrix to an identity matrix
+        Matrix.setIdentityM(mMVPMatrix,
+            0) //set the model view projection matrix to an identity matrix
 
         Matrix.setIdentityM(mMVMatrix, 0) //set the model view  matrix to an identity matrix
 
@@ -60,14 +63,16 @@ class MyRenderer : GLSurfaceView.Renderer {
         Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0)
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0)
 
-        mtriangle?.draw(mMVPMatrix)
+//        mtriangle?.draw(mMVPMatrix)
+        mpyramid?.draw(mMVPMatrix)
     }
 
     companion object {
         fun loadShader(type: Int, shaderCode: String?): Int {
             // create a vertex shader  (GLES32.GL_VERTEX_SHADER) or a fragment shader (GLES32.GL_FRAGMENT_SHADER)
             val shader = GLES32.glCreateShader(type)
-            GLES32.glShaderSource(shader, shaderCode) // add the source code to the shader and compile it
+            GLES32.glShaderSource(shader,
+                shaderCode) // add the source code to the shader and compile it
             GLES32.glCompileShader(shader)
             return shader
         }
