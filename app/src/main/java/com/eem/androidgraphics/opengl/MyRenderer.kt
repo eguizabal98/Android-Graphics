@@ -17,12 +17,14 @@ class MyRenderer : GLSurfaceView.Renderer {
     private val mModelMatrix = FloatArray(16) //model  matrix
     private var mtriangle: Triangle? = null
     private var mpyramid: Pyramid? = null
+    private var mcube: Cube? = null
 
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         // Set the background frame color to black
         GLES32.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
 //        mtriangle = Triangle()
-        mpyramid = Pyramid()
+//        mpyramid = Pyramid()
+        mcube = Cube()
     }
 
     override fun onSurfaceChanged(p0: GL10?, width: Int, height: Int) {
@@ -35,6 +37,10 @@ class MyRenderer : GLSurfaceView.Renderer {
     }
 
     override fun onDrawFrame(p0: GL10?) {
+        val rotationMatrixZ = FloatArray(16)
+        val rotationMatrixY = FloatArray(16)
+        val rotationMatrixX = FloatArray(16)
+
         // Draw background color
         GLES32.glClear(GLES32.GL_COLOR_BUFFER_BIT or GLES32.GL_DEPTH_BUFFER_BIT)
         GLES32.glClearDepthf(1.0f) //set up the depth buffer
@@ -50,6 +56,10 @@ class MyRenderer : GLSurfaceView.Renderer {
 
         Matrix.setIdentityM(mModelMatrix, 0) //set the model matrix to an identity matrix
 
+        Matrix.setRotateM(rotationMatrixZ, 0, 30f, 0f, 0f, 1f)
+        Matrix.setRotateM(rotationMatrixY, 0, 30f, 0f, 1f, 0f)
+        Matrix.setRotateM(rotationMatrixX, 0, 30f, 1f, 0f, 0f)
+
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,
             0.0f, 0f, 1.0f,  //camera is at (0,0,1)
@@ -58,13 +68,18 @@ class MyRenderer : GLSurfaceView.Renderer {
 
         Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, -5f) //move backward for 5 units
 
+        Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix, 0, rotationMatrixZ, 0)
+        Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix, 0, rotationMatrixY, 0)
+        Matrix.multiplyMM(mModelMatrix, 0, mModelMatrix, 0, rotationMatrixX, 0)
+
         // Calculate the projection and view transformation
         //calculate the model view matrix
         Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0)
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0)
 
 //        mtriangle?.draw(mMVPMatrix)
-        mpyramid?.draw(mMVPMatrix)
+//        mpyramid?.draw(mMVPMatrix)
+        mcube?.draw(mMVPMatrix)
     }
 
     companion object {
