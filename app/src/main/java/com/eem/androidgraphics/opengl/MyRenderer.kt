@@ -4,8 +4,10 @@ import android.opengl.GLES32;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
+import com.eem.androidgraphics.opengladvance.ArbitraryShape
 import com.eem.androidgraphics.opengladvance.CharacterA
 import com.eem.androidgraphics.opengladvance.CharacterS
+import com.eem.androidgraphics.opengladvance.Sphere
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -22,15 +24,19 @@ class MyRenderer : GLSurfaceView.Renderer {
     private var mcube: Cube? = null
     private var mCharacterA: CharacterA? = null
     private var characterS: CharacterS? = null
+    private var sphere: Sphere? = null
+    private var arbitraryShape: ArbitraryShape? = null
 
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         // Set the background frame color to black
         GLES32.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
-//        mtriangle = Triangle()
-//        mpyramid = Pyramid()
-//        mcube = Cube()
-//        mCharacterA = CharacterA()
+        mtriangle = Triangle()
+        mpyramid = Pyramid()
+        mcube = Cube()
+        mCharacterA = CharacterA()
         characterS = CharacterS()
+        sphere = Sphere()
+        arbitraryShape = ArbitraryShape()
     }
 
     override fun onSurfaceChanged(p0: GL10?, width: Int, height: Int) {
@@ -87,7 +93,9 @@ class MyRenderer : GLSurfaceView.Renderer {
 //        mpyramid?.draw(mMVPMatrix)
 //        mcube?.draw(mMVPMatrix)
 //        mCharacterA?.draw(mMVPMatrix)
-        characterS?.draw(mMVPMatrix)
+//        characterS?.draw(mMVPMatrix)
+//        sphere?.draw(mMVPMatrix)
+        arbitraryShape?.draw(mMVPMatrix)
     }
 
     companion object {
