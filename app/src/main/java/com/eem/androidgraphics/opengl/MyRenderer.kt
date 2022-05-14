@@ -5,6 +5,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 import com.eem.androidgraphics.opengladvance.CharacterA
+import com.eem.androidgraphics.opengladvance.CharacterS
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -20,6 +21,7 @@ class MyRenderer : GLSurfaceView.Renderer {
     private var mpyramid: Pyramid? = null
     private var mcube: Cube? = null
     private var mCharacterA: CharacterA? = null
+    private var characterS: CharacterS? = null
 
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         // Set the background frame color to black
@@ -27,7 +29,8 @@ class MyRenderer : GLSurfaceView.Renderer {
 //        mtriangle = Triangle()
 //        mpyramid = Pyramid()
 //        mcube = Cube()
-        mCharacterA = CharacterA()
+//        mCharacterA = CharacterA()
+        characterS = CharacterS()
     }
 
     override fun onSurfaceChanged(p0: GL10?, width: Int, height: Int) {
@@ -60,8 +63,8 @@ class MyRenderer : GLSurfaceView.Renderer {
         Matrix.setIdentityM(mModelMatrix, 0) //set the model matrix to an identity matrix
 
         Matrix.setRotateM(rotationMatrixZ, 0, 10f, 0f, 0f, 1f)
-        Matrix.setRotateM(rotationMatrixY, 0, 10f, 0f, 1f, 0f)
-        Matrix.setRotateM(rotationMatrixX, 0, 10f, 1f, 0f, 0f)
+        Matrix.setRotateM(rotationMatrixY, 0, 30f, 0f, 1f, 0f)
+        Matrix.setRotateM(rotationMatrixX, 0, 50f, 1f, 0f, 0f)
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,
@@ -83,7 +86,8 @@ class MyRenderer : GLSurfaceView.Renderer {
 //        mtriangle?.draw(mMVPMatrix)
 //        mpyramid?.draw(mMVPMatrix)
 //        mcube?.draw(mMVPMatrix)
-        mCharacterA?.draw(mMVPMatrix)
+//        mCharacterA?.draw(mMVPMatrix)
+        characterS?.draw(mMVPMatrix)
     }
 
     companion object {
